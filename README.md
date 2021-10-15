@@ -6,32 +6,32 @@ Please check the official laravel installation guide for server requirements bef
 
 Clone the repository
 
-   git clone https://github.com/kabengha/Software-Engineer---Coding-challenge.git
+    git clone https://github.com/kabengha/Software-Engineer---Coding-challenge.git
    
 Switch to the repo folder 
 
-  cd Software-Engineer---Coding-challenge
+    cd Software-Engineer---Coding-challenge
  
 Install all the dependencies using composer
 
-   composer install
+    composer install
 
 Copy the example env file and make the required configuration changes in the .env file
 
-  cp .env.example .env
+    cp .env.example .env
   
 Generate a new application key
 
-   php artisan key:generate
+    php artisan key:generate
 
 
 Run the database migrations (**Set the database connection in .env before migrating and create the database **)
 
-   php artisan migrate
+    php artisan migrate
    
 Start the local development server
 
-   php artisan serve
+     php artisan serve
 
 You can now access the server at http://localhost:8000
 
