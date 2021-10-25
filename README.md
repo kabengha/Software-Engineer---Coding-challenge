@@ -48,7 +48,3 @@ You can now access the server at http://localhost:8000
 
 - [**create**:product](#create-product) ~ Create a new `Product` through Artisan
 - [**delete**:product](#delete-product) ~ Delete a `Product` through Artisan
-
-
-  
-  

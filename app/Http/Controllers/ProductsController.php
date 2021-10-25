@@ -4,100 +4,74 @@ namespace App\Http\Controllers;
 
 use DB;
 use App\Models\Product;
-
-use Request;
+use App\Repositories\ProductRepository;
+use Illuminate\Http\Request;
+use App\Http\Requests\StoreProductRequest;
+use Illuminate\Support\Facades\View;
 
 class ProductsController extends Controller
 {
-   
+    public $repository;
 
+    public function __construct(ProductRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
+    /**
+     * Example it you wanna use paginate ( http://localhost:8000/api/products?pagination=10 )
+     * @pagination param optional
+     * If you wanna get all data without paginattion (http://localhost:8000/api/products)
+     * Example sort data by name   : http://localhost:8000/api/products?sort=price
+     * Example sort data by price  : http://localhost:8000/api/products?sort=price
+     * Example sort data by category http://localhost:8000/api/products?sort=category
+     */
     public function index()
-
     {
-        // get all products
-       $products = (Product::all());
-        
-       // get all category
-       $categories = DB::table('categories')
-            ->select('name')
-            ->get();
+        $pagination = null;
+        $fieldSort = '';
 
-       
+        request()->has('pagination') ? $pagination = request()->pagination : null;
 
-        // check sort
-        if (Request::get('sort') == 'name')
-        {
-            $products = Product::orderBy('name', 'asc')
-                                        ->get();
-        }
-        elseif (Request::get('sort') == 'price'){
-            $products = Product::orderBy('price', 'asc')
-                                        ->get();
-        }
+        $products =  $this->repository->allProducts($pagination);
 
-        if (Request::get('filterby'))
-        {
-            $products = Product::where('category_name', Request::get('filterby'))
-                                        ->get();
-        }
-        
-
-
-       return view('products.index', ['products' => $products, 'categories' => $categories]);
-    }
-
-    public function create()
-
-    {
-        $categories = DB::table('categories')
-            ->select('name')
-            ->get();
-        
-        return view('products.create', ['categories' => $categories]);
+        return View::make('products.index', compact('products'));
     }
 
 
-    public function store()
+    // public function getSingle($idProduct) {
 
-    {
+    //     $results =  $this->repository->find($idProduct);
 
-        
-        request()->validate([
-            'name' => 'required',
-            'description' => 'required',
-            'price' => 'required',
-            'category_name' ,
-            'image' => 'required',
-        ]);
-         
-        Product::create([
-            'name' => request('name'),
-            'description' => request('description'),
-            'price' => request('price'),
-            'category_name' => request('category_name'),
-            'image' => request('image'),
-
-        ]);
-
-        return redirect('/products');
-
-    }
-
-    public function delete($id)
-
-    {
-        DB::delete('delete from products where id = ? ', [$id]);
-        return redirect('/products')->with('success', 'Product Deleted'); 
-    }
-
-    // public function destroy(int $id)
-
-    // {
-    //     $product = product::find($id);
-    //     $product->delete();
-
-    //     return redirect('/products'); 
+    //     return response()->json(['product'=>$results],200);
     // }
 
+    public function CreateProduct()
+    {
+
+        return View::make('products.create');
+        
+    }
+
+    public function Store(StoreProductRequest $request)
+    {
+        $results =  $this->repository->storeProduct($request);
+        return redirect('/');
+    }
+
+
+    public function Destory($id)
+    {
+        try {
+            $statusDestory = Product::findOrFail($id)->delete();
+
+            if($statusDestory) {
+                return redirect('/')->with('success', 'Product Deleted'); 
+            }
+
+        } catch (\Exception $e) {
+            throw new Exception('somthing error when delete this product check and  try again');
+        } 
+    }
 }
  

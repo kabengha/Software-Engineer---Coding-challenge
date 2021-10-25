@@ -1,4 +1,4 @@
-
+ 
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -29,20 +29,6 @@
         <a href="{{ URL::current(). '?sort=name' }}" class="mx-8" >Name</a>
         <a href="{{ URL::current(). '?sort=price' }}" class="mx-8" >Price</a>
        
-        <!-- Filter  -->
-        <form action="{{ url('products')}}" method="GET">
-            <span class="font-bold  mx-8">Filter by :</span>
-            <select name='filterby' class='form-control'>
-                <option value="NULL">NULL</option>
-                @foreach($categories as $categorie)
-                    <option value="{{ $categorie->name }}">{{ $categorie->name }}</option>
-                @endforeach 
-            </select>
-
-            <button type="submit" class="bg-blue-500 tracking-wide text-white px-6 inline-block mb-6 shadow-lg rounded hover:shadow my-4">Filter</button>
-        </form>
-        
-
         <table  class="mt-6'">
             <thead class="bg-gray-100">
                 <tr>
@@ -50,8 +36,7 @@
                 <th class="px-6 py-2 text-xs text-gray-500">Name</th>
                 <th class="px-6 py-2 text-xs text-gray-500">Description</th>
                 <th class="px-6 py-2 text-xs text-gray-500">Price</th>
-                <th class="px-6 py-2 text-xs text-gray-500">Category name</th>
-                <th class="px-6 py-2 text-xs text-gray-500">Image file name</th>
+                <th class="px-6 py-2 text-xs text-gray-500">Category id</th>
                 <th class="px-6 py-2 text-xs text-gray-500">DELETE</th>
                 </tr>
             </thead>
@@ -62,10 +47,9 @@
                 <td class="px-6 py-4">{{ $product->name }}</td>
                 <td class="px-6 py-4">{{ $product->description  }}</td>
                 <td class="px-6 py-4">{{ $product->price  }}</td>
-                <td class="px-6 py-4">{{ $product->category_name  }}</td>
-                <td class="px-6 py-4">{{ $product->image  }}</td>
+                <td class="px-6 py-4">{{ $product->category_id  }}</td>
                 <td class="px-6 py-4">
-                    <a href="/products/delete/{{ $product->id }}" class="ml-4 bg-red-500 tracking-wide text-white px-6 py-2 inline-block mb-6 shadow-lg rounded hover:shadow"> DELETE </a>
+                    <a href="/products/destroy/{{ $product->id }}" class="ml-4 bg-red-500 tracking-wide text-white px-6 py-2 inline-block mb-6 shadow-lg rounded hover:shadow"> DELETE </a>
                 </td>
                 </tr>
             @endforeach  

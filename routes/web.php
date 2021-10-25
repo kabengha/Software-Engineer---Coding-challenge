@@ -1,7 +1,5 @@
 <?php
 
-
-use App\Http\Controllers\PostsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,21 +13,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+
+Route::get('/', 'App\Http\Controllers\ProductsController@index')->name('products.AllProducts');
+Route::get('/products/create', 'App\Http\Controllers\ProductsController@CreateProduct')->name('products.CreateProduct');
+Route::post('/products/store', 'App\Http\Controllers\ProductsController@Store')->name('products.Store');
+Route::get('/products/destroy/{id}', 'App\Http\Controllers\ProductsController@Destory')->name('products.Destory');
+
+
  
-
-// ---------------------- Route Fetch / Display Products -------------------------
- 
-Route::get('/', 'App\Http\Controllers\ProductsController@index');
-Route::get('/products', 'App\Http\Controllers\ProductsController@index');
-
-
-
-// ---------------------- Route Create new Product ----------------------------
-Route::post('/products-store', 'App\Http\Controllers\ProductsController@store');
-Route::get('/products/create', 'App\Http\Controllers\ProductsController@create');
-
-
-
-// ---------------------- Route Delete Product ----------------------------
-Route::get('/products/delete/{id}', 'App\Http\Controllers\ProductsController@delete');
-// Route::delete('/products/{product}', 'App\Http\Controllers\ProductsController@destroy');
